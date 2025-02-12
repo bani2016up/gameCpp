@@ -1,0 +1,23 @@
+#ifndef FIELD_HPP
+#define FIELD_HPP
+
+#include <vector>
+#include <string>
+
+const std::string EMPTY_SIGN = "-";
+const std::string NONE_EMPTY_SIGN = "X";
+
+typedef std::vector<bool> row;
+
+class GameField {
+private:
+    int size;
+    std::vector<row> field;
+
+public:
+    GameField(int fieldSize);
+    int getSize() const;
+    void display() const;
+};
+
+#endif
