@@ -1,10 +1,12 @@
 #ifndef EVENTLOOP_H
 #define EVENTLOOP_H
 #include <unordered_map>
+#include "game.cpp"
 
 namespace event {
     class EventLoop {
-        std::unordered_map<unsigned int, void (*)()> events;
+        std::unordered_map<unsigned int, void (*)(Direction)> events;
+
     public:
         EventLoop() = default;
 
@@ -12,7 +14,7 @@ namespace event {
 
         void run();
 
-        void addEvent(int event_id, void (*proc)());
+        void addEvent(void (*proc)(Direction), int event_id = 0);
 
         void delEvent(int event_id);
     };
