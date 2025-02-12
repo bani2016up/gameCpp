@@ -12,6 +12,10 @@ private:
     int activeX = 0;
     int activeY = 0;
 
+    void clearCls() const {
+        // Clear terminal screen (Linux/Mac)
+        std::cout << "\033[2J\033[1;1H";
+    }
 
 public:
     GameField(int fieldSize) : size(fieldSize) {}
@@ -19,8 +23,15 @@ public:
     int getSize() const {
         return size;
     }
+    int getActiveX() const {
+        return activeX;
+    }
+    int getActiveY() const {
+        return activeY;
+    }
 
-    void display() const {
+    void updateDisplay() const {
+        this->clearCls();
         for (int y = 0; y < size; ++y) {
             for (int x = 0; x < size; ++x) {
                 if (x == activeX && y == activeY) {
@@ -32,7 +43,6 @@ public:
             std::cout << std::endl;
         }
     }
-
 
     void setActiveCell(int x, int y) {
         this->activeX = x;

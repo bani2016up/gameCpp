@@ -14,10 +14,15 @@ private:
     int size;
     std::vector<row> field;
 
+    void clearScreen() const;
+
 public:
     GameField(int fieldSize);
     int getSize() const;
-    void display() const;
+    void updateDisplay() const;
+    void setActiveCell(int, int);
+    int getActiveX() const;
+    int getActiveY() const;
 };
 
 #endif
