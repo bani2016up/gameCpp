@@ -1,6 +1,7 @@
 #include <iostream>
 #include "field.hpp"
 
+#pragma once
 enum Direction { UP, DOWN, LEFT, RIGHT, STOP };
 
 
@@ -33,16 +34,16 @@ public:
         switch (diraction)
         {
         case Direction::UP:
-            currentX + 1;
+            newX += 1;
             break;
         case Direction::DOWN:
-            currentX - 1;
+            newX -= 1;
             break;
         case Direction::LEFT:
-            currentY + 1;
+            newY += 1;
             break;
         case Direction::RIGHT:
-            currentY - 1;
+            newY -= 1;
             break;
         case Direction::STOP:
             this->quit();

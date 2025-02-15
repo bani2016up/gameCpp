@@ -2,8 +2,8 @@
 #include <iostream>
 
 
-void event::EventLoop::addEvent(void (*proc)(Direction), const int event_id) {
-    events[event_id] = proc;
+void event::EventLoop::addEvent(Game& game, const int event_id) {
+    events[event_id] = game.movePlayer;
 }
 
 void event::EventLoop::delEvent(const int event_id) {

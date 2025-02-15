@@ -14,9 +14,9 @@ namespace event {
 
         void run();
 
-        void addEvent(void (*proc)(Direction), int event_id = 0);
-
         void delEvent(int event_id);
+
+        void addEvent(void(* proc)(Direction diraction), int event_id);
     };
 }
 

@@ -1,6 +1,13 @@
 #include <iostream>
+#include "game.cpp"
+#include "eventloop.h"
+
 
 int main() {
-    std::cout << "Hello, World!" << std::endl;
+    Game game;
+    event::EventLoop eventLoop;
+    eventLoop.addEvent(()[]{}, 0);
+    eventLoop.run();
+    game.quit();
     return 0;
 }
