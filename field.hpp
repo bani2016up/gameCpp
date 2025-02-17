@@ -1,28 +1,37 @@
 #ifndef FIELD_HPP
 #define FIELD_HPP
 
-#include <vector>
 #include <string>
+#include <unordered_set>
+#include "mpc.hpp"
 
-const std::string EMPTY_SIGN = "-";
-const std::string NONE_EMPTY_SIGN = "X";
-
-typedef std::vector<bool> row;
+extern const char EMPTY_SIGN;
+extern const char PLAYER_SIGN;
 
 class GameField {
 private:
     int size;
-    std::vector<row> field;
+    int activeX;
+    int activeY;
+    int nonActiveSize;
+    int activeBalance;
+    std::unordered_set<int> placed_bombs;
 
-    void clearScreen() const;
+    void renderNonActiveCells(std::unordered_map<int, bool>&) const;
+    void renderActiveCells(std::unordered_map<int, bool>&) const;
+    void renderHUD(int&) const;
 
 public:
     GameField(int fieldSize);
+    int hashPosition(int, int) const;
     int getSize() const;
-    void updateDisplay() const;
-    void setActiveCell(int, int);
     int getActiveX() const;
     int getActiveY() const;
+    void render(int&, std::unordered_map<int, bool>&) const;
+    void setActiveCell(int, int);
+    void placeBomb(int, int);
+    void checkForDeath(MPC&);
+    int getActiveBalance() const;
 };
 
 #endif

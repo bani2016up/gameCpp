@@ -1,0 +1,3 @@
+/Users/daniilparfenov/Documents/software/game/gameCpp/CMakeFiles/gameCpp.dir
+/Users/daniilparfenov/Documents/software/game/gameCpp/CMakeFiles/edit_cache.dir
+/Users/daniilparfenov/Documents/software/game/gameCpp/CMakeFiles/rebuild_cache.dir

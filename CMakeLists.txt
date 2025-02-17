@@ -1,13 +1,10 @@
-cmake_minimum_required(VERSION 3.29)
+cmake_minimum_required(VERSION 3.10)
 project(gameCpp)
 
-set(CMAKE_CXX_STANDARD 23)
+set(CMAKE_CXX_STANDARD 14)
 
-add_executable(gameCpp main.cpp
-        game.cpp
-        eventloop.cpp
-        eventloop.h
-        field.cpp
-        field.hpp
-)
+find_package(Curses REQUIRED)
+include_directories(${CURSES_INCLUDE_DIR})
 
+add_executable(gameCpp main.cpp game.cpp field.cpp mpc.cpp)
+target_link_libraries(gameCpp ${CURSES_LIBRARIES})
