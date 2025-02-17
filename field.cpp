@@ -122,6 +122,9 @@ void GameField::placeBomb(int x, int y)
     if (future_balance < 0) {
         return;
     }
+    if (placed_bombs.find(hashPosition(x, y))!= placed_bombs.end()) {
+        return;
+    }
     placed_bombs.insert(hashPosition(x, y));
     activeBalance = future_balance;
 }

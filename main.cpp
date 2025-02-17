@@ -3,7 +3,7 @@
 #include <iostream>
 #include <chrono>
 
-const int TICK_INTERVAL = 500;
+const int TICK_INTERVAL = 1000;
 
 
 int main() {
@@ -22,7 +22,7 @@ int main() {
         return 1;
     }
     start_color();
-    int fieldSize = 30;
+    int fieldSize = 15;
     Game game(fieldSize);
     game.updateField(fieldSize/2, fieldSize/2);
 
