@@ -31,6 +31,8 @@ public:
     GameField& getField();
     void nextTick(int);
     std::unordered_map<int, bool>& getMPCs();
+    void scaleMap(int);
+    void scaleMPCs(int);
 };
 
 

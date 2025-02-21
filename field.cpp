@@ -3,6 +3,8 @@
 #include <unordered_set>
 #include <string>
 #include "mpc.hpp"
+#include <vector>
+#include <variant>
 
 enum CellState { EMPTY, NONE_EMPTY, BOMB };
 
@@ -13,7 +15,7 @@ const char PLAYER_ON_BOMB_SIGN = 'O';
 const char ZOMBIE_SIGN = '+';
 const char DEATH_SIGN = '$';
 
-const int INITAL_BALANCE = 100;
+const int INITAL_BALANCE = 5000;
 const int BOMB_COST = 10;
 const int KILL_PRICE = 20;
 
@@ -22,7 +24,7 @@ const int HUD_OFFSET_X = 2;
 const std::string RED_MODIFED = "\x1b[31m";
 
 
-GameField::GameField(int fieldSize) : size(fieldSize), activeX(0), activeY(0), nonActiveSize(fieldSize / 3), activeBalance(INITAL_BALANCE), placed_bombs(std::unordered_set<int> {}) {}
+GameField::GameField(int fieldSize) : size(fieldSize), activeX(0), activeY(0), nonActiveSize(fieldSize / 3), activeBalance(INITAL_BALANCE), placed_bombs(std::unordered_set<int> {}), killCount(0) {}
 
 int GameField::hashPosition(int x, int y) const
 {
@@ -45,18 +47,18 @@ int GameField::getActiveY() const
     return activeY;
 }
 
-void GameField::render(int& tick, std::unordered_map<int, bool>& zombies) const
-{
-    clear();
-    renderNonActiveCells(zombies);
-    renderActiveCells(zombies);
-    renderHUD(tick);
-    refresh();
-}
+void GameField::render(int& tick, std::unordered_map<int, bool>& zombies) const {
+        clear();
+        renderNonActiveCells(zombies);
+        renderActiveCells(zombies);
+        renderHUD(tick);
+        refresh();
+    }
 
-void GameField::renderHUD(int& tick) const
-{
-    mvprintw(0, 0, "Balance: (%d), Tick: (%d)", activeBalance, tick);
+
+
+void GameField::renderHUD(int& tick) const {
+    mvprintw(0, 0, "Balance: (%d), Tick: (%d), Kills: (%d)", activeBalance, tick, killCount);
 }
 
 void GameField::renderNonActiveCells(std::unordered_map<int, bool>& zombies) const
@@ -68,7 +70,7 @@ void GameField::renderNonActiveCells(std::unordered_map<int, bool>& zombies) con
         {
             bool isZombieCell = zombies.find(hashPosition(x - nonActiveSize, y))!= zombies.end();
             if (isZombieCell) {
-                mvaddch(x + HUD_OFFSET_X, y * 2, ZOMBIE_SIGN | COLOR_PAIR(1));
+                mvaddch(x + HUD_OFFSET_X, y * 2, ZOMBIE_SIGN | COLOR_PAIR(2));
             }
             else {
                 mvaddch(x+HUD_OFFSET_X, y * 2, EMPTY_SIGN);
@@ -93,10 +95,10 @@ void GameField::renderActiveCells(std::unordered_map<int, bool>& zombies) const
                 mvaddch(x + HUD_OFFSET_X + nonActiveSize, y * 2, PLAYER_ON_BOMB_SIGN | COLOR_PAIR(1));
             }
             else if (isZombieCell) {
-                mvaddch(x + HUD_OFFSET_X + nonActiveSize, y * 2, ZOMBIE_SIGN);
+                mvaddch(x + HUD_OFFSET_X + nonActiveSize, y * 2, ZOMBIE_SIGN | COLOR_PAIR(1));
             }
             else if (isBombCell) {
-                mvaddch(x + HUD_OFFSET_X + nonActiveSize, y * 2, BOMB_SIGN | COLOR_PAIR(1));
+                mvaddch(x + HUD_OFFSET_X + nonActiveSize, y * 2, BOMB_SIGN | COLOR_PAIR(3));
             }
             else if (isPlayerCell) {
                 mvaddch(x + HUD_OFFSET_X + nonActiveSize, y * 2, PLAYER_SIGN);
@@ -134,10 +136,16 @@ void GameField::checkForDeath(MPC& mpc){
         mpc.kill();
         placed_bombs.erase(hashPosition(mpc.getCurrentX(), mpc.getCurrentY()));
         activeBalance += KILL_PRICE;
+        killCount += 1;
     }
 
 }
 
 int GameField::getActiveBalance() const {
     return activeBalance;
+}
+
+void GameField::setMapSize(int newSize) {
+    size = newSize;
+    nonActiveSize = size / 3;
 }

@@ -4,7 +4,7 @@
 #include <vector>
 #include <random>
 
-const int MAX_MPC = 10;
+int MAX_MPC = 15;
 
 
 Game::Game(int fieldSize) : field(fieldSize) {
@@ -95,7 +95,7 @@ void Game::nextTick(int tick) {
 void Game::spawnMPC() {
     int newMpcCount = getRandomNumber(1, MAX_MPC - aliveMPC.size());
     for (int i = 0; i < newMpcCount; i++) {
-        int x = getRandomNumber(-15, 0);
+        int x = getRandomNumber(-15, -3);
         int y = getRandomNumber(0, field.getSize() - 1);
         if (takenByMPC.find(field.hashPosition(x, y)) == takenByMPC.end()) {
             aliveMPC.push_back(MPC(x, y));
@@ -127,4 +127,13 @@ bool Game::anyMPCOutOfBounds(){
         }
     }
     return false;
+}
+
+void Game::scaleMap(int additionSize){
+    int currentSize = field.getSize();
+    field.setMapSize(currentSize + additionSize);
+}
+
+void Game::scaleMPCs(int additionMPCs){
+    MAX_MPC += additionMPCs;
 }
